@@ -1,20 +1,21 @@
 #ifndef GAME_LOGIC_H
 #define GAME_LOGIC_H
 
-#define BOARD_SIZE 3
+typedef struct GameLogic {
+    int size;                // Veľkosť hracej plochy
+    int win_condition;       // Počet políčok potrebných na výhru
+    int num_players;         // Počet hráčov
+    int current_player;      // Index aktuálneho hráča
+    char player_symbols[10]; // Symboly hráčov (maximálne 10 hráčov)
+    char player_names[10][50]; // Mená hráčov (maximálne 10 hráčov, max. dĺžka mena 50 znakov)
+    char **board;            // Hracia plocha
+    char winner[50];
+} GameLogic;
 
-typedef struct {
-    char board[BOARD_SIZE][BOARD_SIZE];
-    int turn; // 0 = X, 1 = O
-} GameState;
-
-// Inicializuje hru.
-void initialize_game(GameState *game);
-
-// Skontroluje, či má niekto výhru.
-int check_winner(GameState *game);
-
-// Vykoná ťah. Vracia 1, ak je úspešný, inak 0.
-int make_move(GameState *game, int x, int y);
+GameLogic* create_game_logic(int size, int win_condition, int num_players, char *symbols, char names[10][50]);
+void destroy_game_logic(GameLogic *game);
+void print_board(GameLogic *game);
+int make_move(GameLogic *game, int row, int col);
+int check_winner(GameLogic *game);
 
 #endif
