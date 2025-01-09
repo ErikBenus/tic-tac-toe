@@ -18,15 +18,19 @@ GameLogic* create_game_logic(int size, int win_condition, int num_players, char 
     }
 
     // Inicializácia hracej plochy
-    game->board = malloc((size) * sizeof(char *)); 
+    game->board = malloc((size + 1) * sizeof(char *)); // +1 kvôli číslovaniu
     for (int i = 0; i <= size; i++) {
-        game->board[i] = malloc((size ) * sizeof(char)); 
+        game->board[i] = malloc((size + 1) * sizeof(char)); // +1 kvôli číslovaniu
         for (int j = 0; j <= size; j++) {
-            game->board[i][j] = '_'; // Prvé riadky/stĺpce sú na číslovanie
+            game->board[i][j] = (i == 0 || j == 0) ? ' ' : '-'; // Prvé riadky/stĺpce sú na číslovanie
         }
     }
 
     // Číslovanie riadkov a stĺpcov
+    for (int i = 1; i <= size; i++) {
+        game->board[0][i] = '0' + i; // Hlavička stĺpcov
+        game->board[i][0] = '0' + i; // Hlavička riadkov
+    }
 
     return game;
 }
@@ -43,36 +47,26 @@ void destroy_game_logic(GameLogic *game) {
 
 // Vykreslenie hracej plochy
 void print_board(GameLogic *game) {
-    int cislovanieR = 0;
-    int cislovanieS = 0;
-
-    printf("  ");
-    for(int i = 0; i < game->size; i++) {
-        cislovanieS++;
-        if(i < 9) {
-            printf("  %d", cislovanieS);
-        } else {
-            printf(" %d", cislovanieS);
-        }
-        
+    // Vymaže konzolu
+    system("clear");
+    // Vypíše prvý riadok s číslami
+    printf("   ");  // Medzera pre zarovnanie
+    for (int j = 1; j <= game->size; j++) {
+        printf("%2d ", j);  // Vypíše číslo stĺpca s pevným formátom na 2 miesta
     }
-
     printf("\n");
 
-    for (int i = 0; i <= game->size; i++) {
-        cislovanieR++;
-        if(i < 9) {
-            printf(" %d  ", cislovanieR);
-        } else {
-            printf("%d  ", cislovanieR);
-        }
-        
-        for (int j = 0; j <= game->size; j++) {
-            printf("%c  ", game->board[i][j]);  
+    // Vypíše riadky s číslami a hodnotami
+    for (int i = 1; i <= game->size; i++) {
+        printf("%2d ", i);  // Vypíše číslo riadku s pevným formátom na 2 miesta
+        for (int j = 1; j <= game->size; j++) {
+            printf("%2c ", game->board[i][j]);  // Vypíše znak, zarovnaný na 2 miesta
         }
         printf("\n");
     }
 }
+
+
 
 // Vykonanie ťahu
 int make_move(GameLogic *game, int row, int col) {
