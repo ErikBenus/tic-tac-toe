@@ -14,6 +14,8 @@ set(SOURCES
     server.c
     client.c
     game_logic.c
+    shm.c
+    addons.c
 )
 
 add_executable(TIC_TAC_TOE ${SOURCES})
