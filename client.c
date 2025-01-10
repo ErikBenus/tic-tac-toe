@@ -8,7 +8,8 @@
 #include <unistd.h>
 #include "game_logic.h"
 
-#define SHM_NAME "/game_shared_memory"
+//#define SHM_NAME "/game_shared_memory"
+#define SHM_NAME "/game_shared_memory_erik"
 
 
 GameConfig setup_game() {
@@ -28,6 +29,14 @@ GameConfig setup_game() {
     while (config.board_size < 3 || config.board_size > 100) {
         printf("Neplatná veľkosť! Zadajte hodnotu medzi 3 a 100: ");
         scanf("%d", &config.board_size);
+    }
+
+    //pocet policok ptorenych na vitazstvo
+    printf("Zadajte počet políčok potrebných na víťazstvo (min.3 a max.%d): ", config.board_size);
+    scanf("%d", &config.win_condition);
+    while (config.win_condition < 3 || config.win_condition > config.board_size) {
+        printf("Neplatná veľkosť! Zadajte hodnotu medzi 3 a %d)", config.board_size);
+        scanf("%d", &config.win_condition);
     }
 
     //zadanie mien jednotnotlivych hracov a ich symbolov

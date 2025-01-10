@@ -15,6 +15,7 @@ typedef struct GameConfig{
     int board_size;
     char names[10][50];
     char symbols[10];
+    int win_condition;
 } GameConfig;
 
 GameConfig setup_game();
