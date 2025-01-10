@@ -5,6 +5,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "server.h"
+#include "shm.h"
+
 
 // Definícia názvu zdieľanej pamäte
 #define SHM_NAME "/game_shared_memory"
@@ -16,44 +18,20 @@ Server* create_server(int size, int win_condition, int num_players, char *symbol
     server->max_clients = max_clients;
     server->connected_clients = 0;
 
-    // Vytvorenie zdieľanej pamäti pre hru
-    int shm_fd = shm_open(SHM_NAME, O_RDWR | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR); // Vytvoriť zdieľanú pamäť
-    if (shm_fd == -1) {
-        perror("Nemôžem vytvoriť zdieľanú pamäť");
-        exit(EXIT_FAILURE);
-    }
+ 
+    shm_init(SHM_NAME, server);
+    int shm_fd;
+    server_shm_open(SHM_NAME, server, &shm_fd);
+    server->shm_fd_ = shm_fd;
 
-    // Nastavenie veľkosti zdieľanej pamäte
-    if (ftruncate(shm_fd, sizeof(GameLogic)) == -1) {
-        perror("Nemôžem nastaviť veľkosť zdieľanej pamäti");
-        close(shm_fd);
-        exit(EXIT_FAILURE);
-    }
-
-    // Mapovanie zdieľanej pamäti do adresného priestoru
-    server->shm_ptr = mmap(NULL, sizeof(GameLogic), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
-    if (server->shm_ptr == MAP_FAILED) {
-        perror("Nemôžem mapovať zdieľanú pamäť");
-        close(shm_fd);
-        exit(EXIT_FAILURE);
-    }
-
-    close(shm_fd);
     return server;
 }
 
 // Uvoľnenie pamäte servera
 void destroy_server(Server *server) {
-    // Zrušiť zdieľanú pamäť
-    if (munmap(server->shm_ptr, sizeof(GameLogic)) == -1) {
-        perror("Nemôžem odmapovať zdieľanú pamäť");
-    }
-
-    // Odstrániť zdieľanú pamäť
-    if (shm_unlink(SHM_NAME) == -1) {
-        perror("Nemôžem odstrániť zdieľanú pamäť");
-    }
-
+    server_shm_close(server->shm_fd_, server);
+   
+    shm_destroy(SHM_NAME);
     destroy_game_logic(server->game);
     free(server);
 }
