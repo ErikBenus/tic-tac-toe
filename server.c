@@ -61,14 +61,13 @@ void handle_client_move(Server *server, int row, int col) {
 
 // Posielanie stavu hry všetkým klientom cez zdieľanú pamäť
 void send_game_state(Server *server) {
-    // Uloženie aktuálneho stavu hry do zdieľanej pamäti
+
     memcpy(server->shm_ptr, server->game, sizeof(GameLogic));
-    print_board(server->game); // Taktiež zobrazenie stavu na serveri (v reálnom prípade sa posiela klientom cez sockety)
+    print_board(server->game); 
 }
 
 // Notifikácia o víťazovi a zápis do zdieľanej pamäti
 void notify_winner(Server *server, char *winner_name) {
 
-    // Zápis informácie o víťazovi do zdieľanej pamäti
     strncpy(server->game->winner, winner_name, sizeof(server->game->winner) - 1);
 }

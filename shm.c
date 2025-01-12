@@ -9,7 +9,7 @@
 
 
 void shm_init(char *name, Server* server) {
-    shm_unlink(name);           //toto dat potom inde, ked sa da zrusit hra uprostred
+    shm_unlink(name);           
     int shm_fd = shm_open(name, O_RDWR | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR); // Vytvoriť zdieľanú pamäť
     if (shm_fd == -1) {
         perror("Nemôžem vytvoriť zdieľanú pamäť");
