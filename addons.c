@@ -29,24 +29,23 @@ void printTitle() {
 }
  
 void process_special_command(const char* input) {
-    if (strncmp(input, "-a", 2) == 0) {
-        // Príkaz pre add (implementácia neskôr)
-        printf("Príkaz ADD bol vykonaný.\n");
-    } else if (strncmp(input, "-h", 2) == 0) {
+    if (strncmp(input, "-h", 2) == 0) {
         // Príkaz pre help
         printf("HELP: Zadajte riadok a stĺpec pre ťah, alebo použite príkazy:\n");
         printf("-a <argument>: add nový objekt (implementácia neskôr)\n");
         printf("-h: zobraziť tento pomocník\n");
-        printf("-l: odísť zo hry\n");
+        printf("-e: odísť zo hry\n");
         printf("-s: uložiť hru (implementácia neskôr)\n");
-    } else if (strncmp(input, "-l", 2) == 0) {
+    } else if (strncmp(input, "-e", 2) == 0) {
         // Príkaz pre leave
-        printf("Odchádzate zo hry...\n");
-        // Tu budeš musieť implementovať logiku na opustenie hry
-        exit(0); // Okamžité ukončenie hry pre demonštráciu
+        printf("Ukončenie hry\n");
+        exit(0); 
     } else if (strncmp(input, "-s", 2) == 0) {
         // Príkaz pre save
-        printf("Ukladám hru... (implementácia neskôr)\n");
+        printf("Zadajte názov súboru pre uloženie hry: ");
+        char filename[100];
+        scanf("%s", filename);
+        save_game_to_file(server->game, filename);
     } else {
         // Ak sa nezadaný príkaz nenachádza, ignorujeme
         printf("Neznámy príkaz: %s\n", input);
