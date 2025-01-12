@@ -8,8 +8,8 @@
 #include <unistd.h>
 #include "game_logic.h"
 
-//#define SHM_NAME "/game_shared_memory"
-#define SHM_NAME "/game_shared_memory_erik"
+
+#define SHM_NAME "/game_shared_memory"
 
 
 GameConfig setup_game() {
@@ -57,7 +57,7 @@ GameConfig setup_game() {
     return config;
 }
 
-// Funkcia na pripojenie k hre cez zdieľanú pamäť
+// Funkcia na pripojenie k hre 
 void join_game() {
     int shm_fd;
     void *shm_ptr;
@@ -80,4 +80,33 @@ void join_game() {
     // Uzatvorenie zdieľanej pamäti
     munmap(shm_ptr, sizeof(GameLogic));
     close(shm_fd);
+}
+
+
+void save_game_to_file(GameLogic *game, const char *filename) {
+    FILE *file = fopen(filename, "w");
+    if (!file) {
+        perror("Nepodarilo sa otvoriť súbor na zápis");
+        return;
+    }
+
+    // Zápis základných údajov o hre
+    fprintf(file, "%d %d %d %d\n", game->size, game->win_condition, game->num_players, game->current_player);
+
+    // Zápis hráčov (mená a symboly)
+    for (int i = 0; i < game->num_players; i++) {
+        fprintf(file, "%s %c\n", game->player_names[i], game->player_symbols[i]);
+    }
+
+    // Zápis herneho pola
+    for (int i = 0; i < game->size; i++) {
+        
+        for (int j = 0; j < game->size; j++) {
+            fprintf(file, "%2c ", game->board[i][j]); 
+        }
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+    printf("Hra bola úspešne uložená do súboru '%s'.\n", filename);
 }

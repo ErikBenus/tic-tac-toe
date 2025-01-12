@@ -1,8 +1,8 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-/*#include "game_logic.h"
-
+#include "game_logic.h"
+/*
 // Pripojenie klienta k serveru
 int connect_to_server(IPCMethod method);
 
@@ -20,5 +20,6 @@ typedef struct GameConfig{
 
 GameConfig setup_game();
 void join_game();
+void save_game_to_file(GameLogic *game, const char *filename);
 
 #endif
