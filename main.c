@@ -12,7 +12,6 @@
 #include "addons.h"
 
  
- 
 void run_game(GameConfig config, sem_t *game_semaphore) {
     printf("Spúšťam hru pre %d hráčov na hracom poli %dx%d.\n",
             config.num_players, config.board_size, config.board_size);
@@ -39,7 +38,7 @@ void run_game(GameConfig config, sem_t *game_semaphore) {
 
 
         if (input[0] == '-') {
-            process_special_command(input);
+            process_special_command(input, server);
             continue;
         }
 
@@ -61,9 +60,9 @@ void run_game(GameConfig config, sem_t *game_semaphore) {
 
 int main() {
     int choice;
-    sem_unlink("/game_semaphore");
+    sem_unlink("/game_semaphore_");
 
-    sem_t *game_semaphore = sem_open("/game_semaphore", O_RDWR | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 1);
+    sem_t *game_semaphore = sem_open("/game_semaphore_", O_RDWR | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 1);
 
     if (game_semaphore == SEM_FAILED) {
         perror("Nepodarilo sa inicializovať semafor.");

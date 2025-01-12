@@ -7,7 +7,7 @@
 #include "shm.h"
 
 // Definícia názvu zdieľanej pamäte
-#define SHM_NAME "/game_shared_memory"
+#define SHM_NAME "/game_shared_memory_"
 
 
 
