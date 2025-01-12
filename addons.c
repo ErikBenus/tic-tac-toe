@@ -28,7 +28,7 @@ void printTitle() {
     printf("\n");
 }
  
-void process_special_command(const char* input) {
+void process_special_command(const char* input, Server* server) {
     if (strncmp(input, "-h", 2) == 0) {
         // Príkaz pre help
         printf("HELP: Zadajte riadok a stĺpec pre ťah, alebo použite príkazy:\n");

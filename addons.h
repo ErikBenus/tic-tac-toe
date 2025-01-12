@@ -5,6 +5,6 @@
 #include "client.h"
 
 void printTitle();
-void process_special_command(const char* input);
+void process_special_command(const char* input, Server* server);
 
 #endif

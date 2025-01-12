@@ -9,7 +9,7 @@
 
 
 // Definícia názvu zdieľanej pamäte
-#define SHM_NAME "/game_shared_memory"
+#define SHM_NAME "/game_shared_memory_"
 
 // Vytvorenie servera
 Server* create_server(int size, int win_condition, int num_players, char *symbols, char names[10][50], int max_clients) {

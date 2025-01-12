@@ -9,7 +9,7 @@
 #include "game_logic.h"
 
 
-#define SHM_NAME "/game_shared_memory"
+#define SHM_NAME "/game_shared_memory_"
 
 
 GameConfig setup_game() {
