@@ -34,7 +34,7 @@ void process_special_command(const char* input, Server* server) {
         printf("HELP: Zadajte riadok a stĺpec pre ťah, alebo použite príkazy:\n");
         printf("-h: zobraziť tento pomocník\n");
         printf("-e: odísť zo hry\n");
-        printf("-s: uložiť hru (implementácia neskôr)\n");
+        printf("-s: uložiť hru \n");
     } else if (strncmp(input, "-e", 2) == 0) {
         // Príkaz pre leave
         printf("Ukončenie hry\n");
